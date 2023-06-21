@@ -37,7 +37,7 @@ def book(competition, club):
 
     if foundClub and foundCompetition:
         current_date = datetime.date.today()
-        competition_date = datetime.datetime.strptime(foundCompetition['date'], "%Y-%m-%d").date()
+        competition_date = datetime.datetime.strptime(foundCompetition['date'], "%Y-%m-%d %H:%M:%S").date()
 
         if competition_date >= current_date:
             if foundCompetition['numberOfPlaces'] <= 12:
