@@ -57,8 +57,9 @@ def pointsDisplay():
     club_points = []
     for club in clubs:
         club_points.append({'name': club['name'], 'points': club['points']})
-    return render_template('points.html', club_points=club_points)
 
+    # Ajouter la variable 'club' au contexte du modèle
+    return render_template('points.html', club_points=club_points, club=club['email'])
 
 
 @app.route('/logout')

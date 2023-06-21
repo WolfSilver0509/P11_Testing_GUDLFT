@@ -8,10 +8,11 @@
         <h2>Welcome, {{ club['email'] }} </h2><a href="{{ url_for('logout') }}">Logout</a>
 
         <h1>Points Display Board</h1>
-            <ul>
-                {% for club in club_points %}
-                    <li>{{ club.name }}: {{ club.points }}</li>
-                {% endfor %}
-            </ul>
+                <ul>
+                    {% for club_point in club_points %}
+                        <li>{{ club_point.name }}: {{ club_point.points }}</li>
+                    {% endfor %}
+                </ul>
+
     </body>
 </html>
