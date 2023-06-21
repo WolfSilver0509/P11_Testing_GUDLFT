@@ -31,28 +31,37 @@ def showSummary():
 
 
 @app.route('/book/<competition>/<club>')
-def book(competition, club):
+def book(competition,club):
     foundClub = [c for c in clubs if c['name'] == club][0]
     foundCompetition = [c for c in competitions if c['name'] == competition][0]
-
     if foundClub and foundCompetition:
-        if foundCompetition['numberOfPlaces'] <= 12:
-            return render_template('booking.html', club=foundClub, competition=foundCompetition)
-        else:
-            flash("Vous ne pouvez réserver que 12 places maximum pour ce concours. / You can only book up to 12 places for this competition.")
+        return render_template('booking.html',club=foundClub,competition=foundCompetition)
     else:
-        flash("Une erreur s'est produite. Veuillez réessayer / Something went wrong - please try again")
+        flash("Something went wrong-please try again")
+        return render_template('welcome.html', club=club, competitions=competitions)
 
-    return render_template('welcome.html', club=club, competitions=competitions)
 
-
-@app.route('/purchasePlaces',methods=['POST'])
+@app.route('/purchasePlaces', methods=['POST'])
 def purchasePlaces():
-    competition = [c for c in competitions if c['name'] == request.form['competition']][0]
-    club = [c for c in clubs if c['name'] == request.form['club']][0]
-    placesRequired = int(request.form['places'])
-    competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
-    flash('Great-booking complete!')
+    competition_name = request.form['competition']
+    club_name = request.form['club']
+    places_required = int(request.form['places'])
+
+    competition = next((c for c in competitions if c['name'] == competition_name), None)
+    club = next((c for c in clubs if c['name'] == club_name), None)
+
+    if competition and club:
+        if places_required <= 12:
+            if places_required <= int(competition['numberOfPlaces']):
+                competition['numberOfPlaces'] = str(int(competition['numberOfPlaces']) - places_required)
+                flash('Place réservé avec succcés / Great-booking complete!')
+            else:
+                flash('Pas assez de places disponibles dans le concours / Not enough available places in the competition.')
+        else:
+            flash('Un maximum de 12 places peuvent être réservées par un club / Maximum 12 places can be booked by a club.')
+    else:
+        flash('Compétition ou club invalide / Invalid competition or club.')
+
     return render_template('welcome.html', club=club, competitions=competitions)
 
 
