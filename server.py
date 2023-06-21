@@ -51,9 +51,9 @@ def purchasePlaces():
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
 
-    if placesRequired <= club['points']:
-        competition['numberOfPlaces'] -= placesRequired
-        club['points'] -= placesRequired
+    if placesRequired <= int(club['points']):
+        competition['numberOfPlaces'] = str(int(competition['numberOfPlaces']) - placesRequired)
+        club['points'] = str(int(club['points']) - placesRequired)
         flash(' Votre réservation est compléte ! / Great-booking complete!')
 
         updateClubs()  # Mise à jour des informations du club dans le fichier clubs.json
