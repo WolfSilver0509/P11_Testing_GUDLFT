@@ -40,16 +40,27 @@ def book(competition,club):
         flash("Something went wrong-please try again")
         return render_template('welcome.html', club=club, competitions=competitions)
 
+def updateClubs():
+    with open('clubs.json', 'w') as c:
+        json.dump({'clubs': clubs}, c, indent=4)
 
-@app.route('/purchasePlaces',methods=['POST'])
+
+@app.route('/purchasePlaces', methods=['POST'])
 def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
-    competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
-    flash('Great-booking complete!')
-    return render_template('welcome.html', club=club, competitions=competitions)
 
+    if placesRequired <= club['points']:
+        competition['numberOfPlaces'] -= placesRequired
+        club['points'] -= placesRequired
+        flash(' Votre réservation est compléte ! / Great-booking complete!')
+
+        updateClubs()  # Mise à jour des informations du club dans le fichier clubs.json
+    else:
+        flash("Pas assez de points disponibles pour ce club. / Not enough points available for this club.")
+
+    return render_template('welcome.html', club=club, competitions=competitions)
 
 # TODO: Add route for points display
 
