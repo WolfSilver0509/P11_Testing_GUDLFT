@@ -1,6 +1,10 @@
 import pytest
 from server import app
 import html
+import json
+from flask import Flask
+from flask.testing import FlaskClient
+from pytest import fixture
 
 @pytest.fixture
 def client():
@@ -29,17 +33,6 @@ def test_show_summary_with_non_existing_email(client):
     decoded_response = html.unescape(response.get_data(as_text=True))
     assert error_message in decoded_response
 
-import json
-from flask import Flask
-from flask.testing import FlaskClient
-from pytest import fixture
-
-
-
-@fixture
-def client() -> FlaskClient:
-    with app.test_client() as client:
-        yield client
 
 
 def load_json_file(file_path):

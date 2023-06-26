@@ -2,7 +2,7 @@ from server import app
 from flask import request
 import pytest
 import html
-
+import json
 
 def test_show_summary_with_existing_email(monkeypatch):
     # Définir les données simulées pour la requête
@@ -33,10 +33,7 @@ def test_show_summary_with_non_existing_email(monkeypatch):
     decoded_response = html.unescape(response.get_data(as_text=True))
     assert error_message in decoded_response
 
-import json
 
-
-import json
 
 @pytest.fixture
 def client():
