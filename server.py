@@ -43,6 +43,7 @@ def book(competition,club):
 
 @app.route('/purchasePlaces', methods=['POST'])
 def purchasePlaces():
+    print("fonction")
     competition_name = request.form['competition']
     club_name = request.form['club']
     places_required = int(request.form['places'])
@@ -51,6 +52,7 @@ def purchasePlaces():
     club = next((c for c in clubs if c['name'] == club_name), None)
 
     if competition and club:
+        print("here1")
         if places_required <= 12:
             if places_required <= int(competition['numberOfPlaces']):
                 competition['numberOfPlaces'] = str(int(competition['numberOfPlaces']) - places_required)
@@ -58,6 +60,7 @@ def purchasePlaces():
             else:
                 flash('Pas assez de places disponibles dans le concours / Not enough available places in the competition.')
         else:
+            print("here")
             flash('Un maximum de 12 places peuvent être réservées par un club / Maximum 12 places can be booked by a club.')
     else:
         flash('Compétition ou club invalide / Invalid competition or club.')
