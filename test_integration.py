@@ -50,7 +50,6 @@ def test_purchase_places_with_enough_points_available(client):
                            data={'competition': 'Fall Classic', 'club': 'Simply Lift', 'places': '3'})
 
     # Vérifier la réponse
-    print(response)
     assert response.status_code == 200
     assert "Super votre réservation est bien prise en compte / Great-booking complete!" in response.data.decode('utf-8')
 
