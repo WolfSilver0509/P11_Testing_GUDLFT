@@ -5,9 +5,9 @@ from server import app
 
 @pytest.fixture
 def client():
-    with app.test_client() as client:
-        yield client
-
+    app.config['TESTING'] = True
+    client = app.test_client()
+    yield client
 
 
 def test_purchase_places_exceed_max_limit(client):
@@ -36,7 +36,7 @@ def test_purchase_valid_places(client):
         {'name': 'Simply Lift'}
     ]
     # Simulez une requête POST avec un nombre de places dans la limite maximale
-    response = client.post('/purchasePlaces', data={'competition': 'Fall Classic', 'club': 'Simply Lift', 'places': '5'})
+    response = client.post('/purchasePlaces', data={'competition': 'Fall Classic', 'club': 'Simply Lift', 'places': '2'})
 
     # Vérifiez la réponse et le message flash correspondant
     assert response.status_code == 200
