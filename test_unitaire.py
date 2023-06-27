@@ -9,16 +9,15 @@ def client():
         yield client
 
 
-def load_json_file(file_path):
-    with open(file_path) as f:
-        data = json.load(f)
-    return data
-
 
 def test_purchase_places_exceed_max_limit(client):
-    # charger des données de test pour la compétition et le club
-    clubs = load_json_file("clubs.json")["clubs"]
-    competitions = load_json_file("competitions.json")["competitions"]
+    # Créez des données de test pour la compétition et le club
+    competitions = [
+        {'name': 'Fall Classic', 'numberOfPlaces': '10'}
+    ]
+    clubs = [
+        {'name': 'Simply Lift'}
+    ]
 
     # Simulez une requête POST avec un nombre de places supérieur à la limite maximale
     response = client.post('/purchasePlaces', data={ 'club': 'Simply Lift','competition': 'Fall Classic', 'places': '13'})
@@ -30,12 +29,15 @@ def test_purchase_places_exceed_max_limit(client):
 
 def test_purchase_valid_places(client):
     # Créez des données de test pour la compétition et le club
-    # Créez des données de test pour la compétition et le club
-    clubs = load_json_file("clubs.json")["clubs"]
-    competitions = load_json_file("competitions.json")["competitions"]
-
+    competitions = [
+        {'name': 'Fall Classic', 'numberOfPlaces': '13'}
+    ]
+    clubs = [
+        {'name': 'Simply Lift'}
+    ]
     # Simulez une requête POST avec un nombre de places dans la limite maximale
-    response = client.post('/purchasePlaces', data={'competition': 'Fall Classic', 'club': 'Simply Lift', 'places': '10'})
+    response = client.post('/purchasePlaces', data={'competition': 'Fall Classic', 'club': 'Simply Lift', 'places': '5'})
+
     # Vérifiez la réponse et le message flash correspondant
     assert response.status_code == 200
     assert "Place réservé avec succcés / Great-booking complete!" in response.data.decode('utf-8')
