@@ -10,6 +10,7 @@ def client():
 @pytest.fixture
 def mock_competitions(mocker):
     """
+    LEs données : 
     competition[0] pour tester les erreurs sur les points insuffisants pour acheter une place
     competition[1] pour tester les erreurs sur la réservation de plus de 12 places par club sur la même compétition
     competition[2] pour tester les erreur sur la date d'une compétition passée
