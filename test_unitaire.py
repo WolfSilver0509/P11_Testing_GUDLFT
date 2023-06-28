@@ -2,6 +2,8 @@ import html
 from flask import Flask, request, render_template, flash
 import json
 from conftest import app, client , mock_competitions, mock_clubs
+from unittest.mock import patch
+from server import book
 
 def test_show_summary_with_existing_email(monkeypatch):
     # Définir les données simulées pour la requête
@@ -84,9 +86,6 @@ def test_purchase_valid_places(client, mock_competitions, mock_clubs):
     assert "Place réservé avec succcés / Great-booking complete!" in response.data.decode('utf-8')
 
 
-
-from unittest.mock import patch
-from server import book
 # Test unitaire pour la réservation sur une compétition passée
 
 def test_book_past_competition(mock_competitions, mock_clubs):
