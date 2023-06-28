@@ -2,6 +2,8 @@ import json
 from conftest import client
 
 
+
+
 def test_purchase_places_with_enough_points_available(client):
     # Charger les données des fichiers JSON
     with open("clubs.json") as clubs_file:
