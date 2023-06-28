@@ -1,14 +1,16 @@
-import pytest
+# import pytest
 from flask import Flask, request, render_template, flash
 import json
-from server import app
+from conftest import app, client
 
-@pytest.fixture
-def client():
-    app.config['TESTING'] = True
-    client = app.test_client()
-    yield client
+# from server import app
 
+# @pytest.fixture
+# def client():
+#     app.config['TESTING'] = True
+#     client = app.test_client()
+#     yield client
+#
 
 def test_purchase_places_exceed_max_limit(client):
     # Créez des données de test pour la compétition et le club
