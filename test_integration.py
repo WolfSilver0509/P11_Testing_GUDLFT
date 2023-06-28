@@ -4,8 +4,6 @@ from conftest import client
 import html
 import json
 from flask import Flask
-from flask.testing import FlaskClient
-from pytest import fixture
 
 
 def test_show_summary_with_existing_email(client):
