@@ -1,9 +1,7 @@
-from pytest import fixture
+import pytest
 from server import app
-from flask.testing import FlaskClient
 
-@fixture
-def client() -> FlaskClient:
+@pytest.fixture
+def client():
     with app.test_client() as client:
         yield client
-
