@@ -1,12 +1,7 @@
-import pytest
 from flask import Flask, request, render_template, flash
 import json
 from server import app
-
-@pytest.fixture
-def client():
-    with app.test_client() as client:
-        yield client
+from conftest import client
 
 
 def load_json_file(file_path):

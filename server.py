@@ -52,13 +52,10 @@ def purchasePlaces():
 
     if competition and club:
         if places_required <= 12:
-            # print(f"\nplaces_required: {places_required}\n")
-            # print(f"\ncompetition['numberOfPlaces']: {int(competition['numberOfPlaces'])}\n")
             if places_required <= int(competition['numberOfPlaces']):
                 competition['numberOfPlaces'] = str(int(competition['numberOfPlaces']) - places_required)
                 flash('Place réservé avec succcés / Great-booking complete!')
             else:
-                print('PAs assez de place')
                 flash('Pas assez de places disponibles dans le concours / Not enough available places in the competition.')
         else:
             flash('Un maximum de 12 places peuvent être réservées par un club / Maximum 12 places can be booked by a club.')
