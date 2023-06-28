@@ -60,6 +60,8 @@ def purchasePlaces():
         if competition and club:
             if placesRequired <= 12:
                 if placesRequired <= int(competition['numberOfPlaces']):
+                    # print(f"\nplaces_required: {placesRequired}\n")
+                    # print(f"\ncompetition['numberOfPlaces']: {competition['numberOfPlaces']}\n")
                     competition['numberOfPlaces'] = str(int(competition['numberOfPlaces']) - placesRequired)
                     flash('Place réservé avec succcés / Great-booking complete!')
                 else:

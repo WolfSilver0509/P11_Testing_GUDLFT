@@ -1,8 +1,7 @@
-from server import app
-from flask import request
-import pytest
 import html
-
+from flask import Flask, request, render_template, flash
+import json
+from conftest import app, client , mock_competitions, mock_clubs
 
 def test_show_summary_with_existing_email(monkeypatch):
     # Définir les données simulées pour la requête
@@ -33,26 +32,16 @@ def test_show_summary_with_non_existing_email(monkeypatch):
     decoded_response = html.unescape(response.get_data(as_text=True))
     assert error_message in decoded_response
 
-import json
-from conftest import client
-
-
-
-
-def test_purchase_places_with_enough_points_available(client):
+def test_purchase_places_with_enough_points_available(client, mock_competitions, mock_clubs):
     # Charger les données des fichiers JSON
-    with open("clubs.json") as clubs_file:
-        clubs_data = json.load(clubs_file)
-
-    with open("competitions.json") as competitions_file:
-        competitions_data = json.load(competitions_file)
+    competitions = mock_competitions
+    clubs = mock_clubs
 
     # Simuler une requête POST avec suffisamment de points disponibles
-    response = client.post('/purchasePlaces', data={'competition': 'Fall Classic', 'club': 'Simply Lift', 'places': '3'})
-
+    response = client.post('/purchasePlaces', data={'competition': 'HollyDays', 'club': 'Simply_Lift', 'places': '3'})
     # Vérifier la réponse
     assert response.status_code == 200
-    assert "Great-booking complete!" in response.data.decode('utf-8')
+    assert "Place réservé avec succcés / Great-booking complete!" in response.data.decode('utf-8')
 
 
 def test_purchase_places_with_not_enough_points_available(client):
@@ -70,19 +59,6 @@ def test_purchase_places_with_not_enough_points_available(client):
     assert response.status_code == 200
     assert "Not enough points available for this club." in response.data.decode('utf-8')
 
-
-# import pytest
-from flask import Flask, request, render_template, flash
-import json
-from conftest import app, client , mock_competitions, mock_clubs
-# from server import app
-
-# @pytest.fixture
-# def client():
-#     app.config['TESTING'] = True
-#     client = app.test_client()
-#     yield client
-#
 
 def test_purchase_places_exceed_max_limit(client , mock_competitions, mock_clubs):
     # charger des données de test pour la compétition et le club pour tester la réservation de places

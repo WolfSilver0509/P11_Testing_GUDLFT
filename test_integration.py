@@ -46,9 +46,8 @@ def test_purchase_places_with_enough_points_available(client):
                            data={'competition': 'Fall Classic', 'club': 'Simply Lift', 'places': '3'})
 
     # Vérifier la réponse
-    print(response)
     assert response.status_code == 200
-    assert "Super votre réservation est bien prise en compte / Great-booking complete!" in response.data.decode('utf-8')
+    assert "Place réservé avec succcés / Great-booking complete!" in response.data.decode('utf-8')
 
 
 def test_purchase_places_with_not_enough_points_available(client):
@@ -58,7 +57,6 @@ def test_purchase_places_with_not_enough_points_available(client):
     # Simuler une requête POST avec un nombre de points supérieur à ceux disponibles
     response = client.post('/purchasePlaces',
                            data={'competition': 'Fall Classic', 'club': 'Iron Temple', 'places': '5'})
-
     # Vérifier la réponse
     assert response.status_code == 200
     assert "Pas assez de points disponibles pour ce club. / Not enough points available for this club." in response.data.decode(
@@ -94,6 +92,7 @@ def test_purchase_valid_places(client):
 
     # Simulez une requête POST avec un nombre de places dans la limite maximale
     response = client.post('/purchasePlaces', data={'competition': 'Fall Classic', 'club': 'Simply Lift', 'places': '10'})
+    # print(f"response: {response.data.decode('utf-8')}")
     # Vérifiez la réponse et le message flash correspondant
     assert response.status_code == 200
     assert "Place réservé avec succcés / Great-booking complete!" in response.data.decode('utf-8')
