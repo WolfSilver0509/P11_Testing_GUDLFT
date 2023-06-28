@@ -40,10 +40,9 @@ def book(competition, club):
         competition_date = datetime.datetime.strptime(foundCompetition['date'], "%Y-%m-%d %H:%M:%S").date()
 
         if competition_date >= current_date:
-            # if foundCompetition['numberOfPlaces'] <= 12:
+
                 return render_template('booking.html', club=foundClub, competition=foundCompetition)
-            # else:
-                # flash("Vous ne pouvez réserver que 12 places maximum pour ce concours. / You can only book up to 12 places for this competition.")
+
         else:
             flash("Ce concours a déjà eu lieu. / This competition has already taken place.")
     else:
