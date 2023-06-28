@@ -42,6 +42,8 @@ def client():
     client = app.test_client()
     yield client
 
+
+
 def test_purchase_places_with_enough_points_available(client):
     # Charger les données des fichiers JSON
     with open("clubs.json") as clubs_file:
