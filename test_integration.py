@@ -1,15 +1,6 @@
 import json
 from flask import Flask
-from flask.testing import FlaskClient
-from pytest import fixture
 
-from server import app
-
-
-@fixture
-def client() -> FlaskClient:
-    with app.test_client() as client:
-        yield client
 
 
 def load_json_file(file_path):
