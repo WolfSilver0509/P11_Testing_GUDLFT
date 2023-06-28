@@ -1,15 +1,12 @@
 import pytest
 from server import app
+from conftest import client
 import html
 import json
 from flask import Flask
 from flask.testing import FlaskClient
 from pytest import fixture
 
-@pytest.fixture
-def client():
-    with app.test_client() as client:
-        yield client
 
 def test_show_summary_with_existing_email(client):
     # Simule une requête POST à '/showSummary' avec un email existant
