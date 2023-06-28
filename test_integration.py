@@ -11,7 +11,7 @@ def load_json_file(file_path):
 
 
 def test_purchase_places_exceed_max_limit(client):
-    # charger des données de test pour la compétition et le club
+    # charger des données de test pour la compétition et le club pour tester la réservation de places
     clubs = load_json_file("clubs.json")["clubs"]
     competitions = load_json_file("competitions.json")["competitions"]
 
@@ -24,8 +24,7 @@ def test_purchase_places_exceed_max_limit(client):
 
 
 def test_purchase_valid_places(client):
-    # Créez des données de test pour la compétition et le club
-    # Créez des données de test pour la compétition et le club
+    # Créez des données de test pour la compétition et le club pour tester la réservation de places
     clubs = load_json_file("clubs.json")["clubs"]
     competitions = load_json_file("competitions.json")["competitions"]
 

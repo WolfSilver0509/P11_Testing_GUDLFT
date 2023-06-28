@@ -12,7 +12,7 @@ from conftest import app, client , mock_competitions, mock_clubs
 #
 
 def test_purchase_places_exceed_max_limit(client , mock_competitions, mock_clubs):
-    # charger des données de test pour la compétition et le club
+    # charger des données de test pour la compétition et le club pour tester la réservation de places
     competitions = mock_competitions
     clubs = mock_clubs
 
@@ -25,7 +25,7 @@ def test_purchase_places_exceed_max_limit(client , mock_competitions, mock_clubs
 
 
 def test_purchase_valid_places(client, mock_competitions, mock_clubs):
-    # Créez des données de test pour la compétition et le club
+    # Créez des données de test pour la compétition et le club pour tester la réservation de places
     competition = mock_competitions
     club = mock_clubs
     # Simulez une requête POST avec un nombre de places dans la limite maximale
