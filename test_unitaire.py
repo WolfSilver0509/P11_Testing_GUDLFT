@@ -3,6 +3,7 @@ from flask import request
 import pytest
 import html
 import json
+from conftest import client
 
 def test_show_summary_with_existing_email(monkeypatch):
     # Définir les données simulées pour la requête
