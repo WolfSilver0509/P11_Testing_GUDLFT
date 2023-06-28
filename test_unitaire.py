@@ -1,15 +1,6 @@
 import json
-import pytest
+from conftest import client
 
-from server import app
-
-import json
-
-@pytest.fixture
-def client():
-    app.config['TESTING'] = True
-    client = app.test_client()
-    yield client
 
 def test_purchase_places_with_enough_points_available(client):
     # Charger les données des fichiers JSON
