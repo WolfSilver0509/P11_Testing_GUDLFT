@@ -45,15 +45,15 @@ def book(competition,club):
 def purchasePlaces():
     competition_name = request.form['competition']
     club_name = request.form['club']
-    places_required = int(request.form['places'])
+    placesRequired = int(request.form['places'])
 
     competition = next((c for c in competitions if c['name'] == competition_name), None)
     club = next((c for c in clubs if c['name'] == club_name), None)
 
     if competition and club:
-        if places_required <= 12:
-            if places_required <= int(competition['numberOfPlaces']):
-                competition['numberOfPlaces'] = str(int(competition['numberOfPlaces']) - places_required)
+        if placesRequired <= 12:
+            if placesRequired <= int(competition['numberOfPlaces']):
+                competition['numberOfPlaces'] = str(int(competition['numberOfPlaces']) - placesRequired)
                 flash('Place réservé avec succcés / Great-booking complete!')
             else:
                 flash('Pas assez de places disponibles dans le concours / Not enough available places in the competition.')
