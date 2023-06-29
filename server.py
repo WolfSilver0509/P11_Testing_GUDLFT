@@ -40,9 +40,22 @@ def book(competition,club):
         flash("Something went wrong-please try again")
         return render_template('welcome.html', club=club, competitions=competitions)
 
+# def updateClubs():
+#     with open('clubs.json', 'w') as c:
+#         json.dump({'clubs': clubs}, c, indent=4)
+#
+# def updateCompetitions():
+#     with open('competitions.json', 'w') as c:
+#         json.dump({'competitions': competitions}, c, indent=4)
 def updateClubs():
     with open('clubs.json', 'w') as c:
-        json.dump({'clubs': clubs}, c, indent=4)
+        # Convertit les valeurs en entiers avant de les stocker
+        updated_clubs = [{'name': club['name'], 'points': int(club['points'])} for club in clubs]
+        json.dump({'clubs': updated_clubs}, c, indent=4)
+
+def updateCompetitions():
+    with open('competitions.json', 'w') as c:
+        json.dump({'competitions': competitions}, c, indent=4)
 
 
 @app.route('/purchasePlaces',methods=['POST'])
@@ -51,8 +64,10 @@ def purchasePlaces():
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
     competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
+    club['points'] = int(club['points'])-placesRequired
     flash('Great-booking complete!')
     updateClubs()  # Appel de la fonction updateClubs pour mettre à jour le fichier JSON des clubs
+    updateCompetitions() # Appel de la fonction updateCompetitions pour mettre à jour le fichier JSON des compétitions
     return render_template('welcome.html', club=club, competitions=competitions)
 
 # TODO: Add route for points display
