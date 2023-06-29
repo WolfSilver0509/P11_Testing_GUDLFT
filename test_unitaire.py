@@ -88,8 +88,6 @@ def test_purchase_valid_places(client, mock_competitions, mock_clubs):
     assert "Place réservé avec succcés / Great-booking complete!" in response.data.decode('utf-8')
 
 
-
-
 # Test unitaire pour la réservation sur une compétition passée
 
 def test_book_past_competition(mock_competitions, mock_clubs):
@@ -138,7 +136,7 @@ def test_purchase_places_integration(mock_update_clubs, mock_update_competitions
     # Données de test
     competition_name = 'Spring Festival'
     club_name = 'Simply Lift'
-    places_required = 2
+    placeRequired = 2
 
     # Obtient les valeurs initiales des points du club et du nombre de places de la compétition
     initial_club = next((c for c in clubs if c['name'] == club_name), None)
@@ -151,7 +149,7 @@ def test_purchase_places_integration(mock_update_clubs, mock_update_competitions
         response = client.post('/purchasePlaces', data={
             'competition': competition_name,
             'club': club_name,
-            'places': str(places_required)
+            'places': str(placeRequired)
         })
 
         # Vérifie que la redirection s'est produite avec succès
@@ -160,11 +158,13 @@ def test_purchase_places_integration(mock_update_clubs, mock_update_competitions
         # Vérifie que les points du club ont été mis à jour correctement
         updated_club = next((c for c in clubs if c['name'] == club_name), None)
         assert updated_club is not None
-        assert int(updated_club['points']) == initial_club_points - places_required
+        print(f" les point à jours du club : {int(updated_club['points'])})")
+        print(f" le résultat  : {initial_club_points - placeRequired} )")
+        assert int(updated_club['points']) == initial_club_points - placeRequired
 
         # Vérifie que les compétitions ont également été mises à jour
         updated_competition = next((c for c in competitions if c['name'] == competition_name), None)
         assert updated_competition is not None
-        assert int(updated_competition['numberOfPlaces']) == initial_competition_places - places_required
+        assert int(updated_competition['numberOfPlaces']) == initial_competition_places - placeRequired
 
 
