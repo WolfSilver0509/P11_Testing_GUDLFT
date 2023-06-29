@@ -2,9 +2,7 @@ import pytest
 from server import app
 from conftest import client
 import html
-from flask import Flask, request, render_template, flash
-import json
-from server import app, clubs, competitions, book
+
 
 def test_show_summary_with_existing_email(client):
     # Simule une requête POST à '/showSummary' avec un email existant
@@ -27,6 +25,10 @@ def test_show_summary_with_non_existing_email(client):
     error_message = "L'email nonexisting@example.com n'est pas enregistré sur le site."
     decoded_response = html.unescape(response.get_data(as_text=True))
     assert error_message in decoded_response
+
+import json
+from flask import Flask
+
 
 
 def load_json_file(file_path):
@@ -60,6 +62,9 @@ def test_purchase_places_with_not_enough_points_available(client):
     assert "Pas assez de points disponibles pour ce club. / Not enough points available for this club." in response.data.decode(
         'utf-8')
 
+from flask import Flask, request, render_template, flash
+import json
+
 
 def load_json_file(file_path):
     with open(file_path) as f:
@@ -92,6 +97,11 @@ def test_purchase_valid_places(client):
     assert response.status_code == 200
     assert "Place réservé avec succcés / Great-booking complete!" in response.data.decode('utf-8')
 
+
+
+from flask import Flask, render_template, flash
+import pytest
+from server import app, clubs, competitions, book
 
 # Fixture pour les données de test
 @pytest.fixture
