@@ -56,6 +56,20 @@ def book(competition, club):
     return render_template('welcome.html', club=club, competitions=competitions)
 
 
+def updateClubs():
+    with open('clubs.json', 'w') as c:
+        json.dump({'clubs': clubs}, c, indent=4)
+        # Convertit les valeurs en entiers avant de les stocker
+        updated_clubs = [{'name': club['name'], 'points': int(club['points'])} for club in clubs]
+        json.dump({'clubs': updated_clubs}, c, indent=4)
+
+def updateCompetitions():
+    with open('competitions.json', 'w') as c:
+        json.dump({'competitions': competitions}, c, indent=4)
+        # Convertit les valeurs en entiers avant de les stocker
+        updated_competitions = [{'name': competition['name'], 'numberOfPlaces': int(competition['numberOfPlaces'])} for competition in competitions]
+        json.dump({'competitions': updated_competitions}, c, indent=4)
+
 @app.route('/purchasePlaces', methods=['POST'])
 def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
