@@ -53,40 +53,30 @@ def book(competition, club):
     else:
         flash("Une erreur s'est produite. Veuillez réessayer / Something went wrong - please try again")
 
-    return render_template('welcome.html', club=club, competitions=competitions)
+def updateClubs():
+    with open('clubs.json', 'w') as c:
+        # Convertit les valeurs en entiers avant de les stocker
+        updated_clubs = [{'name': club['name'], 'points': int(club['points'])} for club in clubs]
+        json.dump({'clubs': updated_clubs}, c, indent=4)
+
+def updateCompetitions():
+    with open('competitions.json', 'w') as c:
+        json.dump({'competitions': competitions}, c, indent=4)
 
 
-@app.route('/purchasePlaces', methods=['POST'])
+@app.route('/purchasePlaces',methods=['POST'])
 def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     competition_name = request.form['competition']
     club_name = request.form['club']
     placesRequired = int(request.form['places'])
-
-    if placesRequired <= int(club['points']):
-        competition = next((c for c in competitions if c['name'] == competition_name), None)
-        club = next((c for c in clubs if c['name'] == club_name), None)
-        if competition and club:
-            if placesRequired <= 12:
-                if placesRequired <= int(competition['numberOfPlaces']):
-                    # print(f"\nplaces_required: {placesRequired}\n")
-                    # print(f"\ncompetition['numberOfPlaces']: {competition['numberOfPlaces']}\n")
-                    competition['numberOfPlaces'] = str(int(competition['numberOfPlaces']) - placesRequired)
-                    flash('Place réservé avec succcés / Great-booking complete!')
-                else:
-                    flash(
-                        'Pas assez de places disponibles dans le concours / Not enough available places in the competition.')
-            else:
-                flash(
-                    'Un maximum de 12 places peuvent être réservées par un club / Maximum 12 places can be booked by a club.')
-        else:
-            flash('Compétition ou club invalide / Invalid competition or club.')
-    else:
-        flash("Pas assez de points disponibles pour ce club. / Not enough points available for this club.")
-
+    competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
+    club['points'] = int(club['points'])-placesRequired
+    flash('Great-booking complete!')
+    updateClubs()  # Appel de la fonction updateClubs pour mettre à jour le fichier JSON des clubs
+    updateCompetitions() # Appel de la fonction updateCompetitions pour mettre à jour le fichier JSON des compétitions
     return render_template('welcome.html', club=club, competitions=competitions)
-
 
 # TODO: Add route for points display
 
