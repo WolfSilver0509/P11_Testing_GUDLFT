@@ -1,6 +1,6 @@
 import sys
 from locust import HttpUser, task, between
-from P11_Testing_GUDLFT.test.test_integration import *
+from test.test_integration import *
 
 class MyLocustUser(HttpUser):
     wait_time = between(1, 3)  # Temps d'attente entre les requêtes
