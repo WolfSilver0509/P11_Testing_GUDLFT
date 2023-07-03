@@ -226,8 +226,6 @@ def test_purchase_places_integration(mock_update_clubs, mock_update_competitions
         # assert int(updated_competition['numberOfPlaces']) == initial_competition_places - places_required
 
 
-from flask import Flask, redirect, url_for, render_template
-from P11_Testing_GUDLFT.server import app  # Assurez-vous que le chemin vers le module server est correctement spécifié
 
 def test_logout(client):
 

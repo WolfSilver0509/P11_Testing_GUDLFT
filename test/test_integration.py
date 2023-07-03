@@ -13,6 +13,66 @@ def load_json_file(file_path):
 
 
 def test_user_path_valide(client):
+    """ Teste le chemin d'accès valide pour l'utilisateur """
+    def test_loadClubs():
+        # Données de test
+        clubs_data = {
+            'clubs': [
+                {'name': 'Club A', 'points': 100},
+                {'name': 'Club B', 'points': 150},
+                {'name': 'Club C', 'points': 200}
+            ]
+        }
+
+        # Mock du fichier JSON pour le test
+        mock_file = mock_open(read_data=json.dumps(clubs_data))
+
+        with patch('builtins.open', mock_file):
+            # Appeler la fonction loadClubs
+            from P11_Testing_GUDLFT.server import loadClubs
+            result = loadClubs()
+
+            # Vérifier que le fichier JSON a été ouvert avec le bon nom de fichier
+            mock_file.assert_called_once_with('clubs.json')
+
+            # Vérifier que la fonction a renvoyé les données de clubs correctement
+            assert result == clubs_data['clubs']
+
+    def test_loadCompetitions():
+        # Données de test
+        competitions_data = {
+            'competitions': [
+                {'name': 'Competition A', 'numberOfPlaces': 50},
+                {'name': 'Competition B', 'numberOfPlaces': 100},
+                {'name': 'Competition C', 'numberOfPlaces': 200}
+            ]
+        }
+
+        # Mock du fichier JSON pour le test
+        mock_file = mock_open(read_data=json.dumps(competitions_data))
+
+        with patch('builtins.open', mock_file):
+            # Appeler la fonction loadCompetitions
+            from P11_Testing_GUDLFT.server import loadCompetitions
+            result = loadCompetitions()
+
+            # Vérifier que le fichier JSON a été ouvert avec le bon nom de fichier
+            mock_file.assert_called_once_with('competitions.json')
+
+            # Vérifier que la fonction a renvoyé les données de compétitions correctement
+            assert result == competitions_data['competitions']
+
+    def test_index():
+        # Créer un client de test Flask
+        with app.test_client() as client:
+            # Appeler la route '/'
+            response = client.get('/')
+
+            # Vérifier que la réponse a un code de statut 200 (OK)
+            assert response.status_code == 200
+
+            # Vérifier que le contenu HTML rendu contient le texte 'index.html'
+            assert b'Welcome to the GUDLFT Registration Portal!' in response.data
 
     def show_summary_with_existing_email(client):
         # Simule une requête POST à '/showSummary' avec un email existant
@@ -68,6 +128,17 @@ def test_user_path_valide(client):
             # Vérifier que la réponse contient les informations attendues
             assert response.status_code == 200
 
+    def logout(client):
+        # Appeler la route '/logout'
+        response = client.get('/logout', follow_redirects=True)
+
+        # Vérifier que la redirection se fait vers la route 'index'
+        assert response.status_code == 200
+        assert request.path == '/logout'
+
+        # Vérifier que la fonction 'index' est appelée
+        assert b'Welcome to the GUDLFT Registration Portal!' in response.data
+
 def test_user_path_invalide_email(client):
 
     def show_summary_with_non_existing_email(client):
@@ -106,6 +177,17 @@ def test_user_path_invalide_place(client):
         assert "Pas assez de points disponibles pour ce club. / Not enough points available for this club." in response.data.decode(
             'utf-8')
 
+    def logout(client):
+        # Appeler la route '/logout'
+        response = client.get('/logout', follow_redirects=True)
+
+        # Vérifier que la redirection se fait vers la route 'index'
+        assert response.status_code == 200
+        assert request.path == '/logout'
+
+        # Vérifier que la fonction 'index' est appelée
+        assert b'Welcome to the GUDLFT Registration Portal!' in response.data
+
 
 def test_user_path_invalide_place_exed_12(client):
 
@@ -133,6 +215,17 @@ def test_user_path_invalide_place_exed_12(client):
         assert "Un maximum de 12 places peuvent être réservées par un club / Maximum 12 places can be booked by a club." in response.data.decode(
             'utf-8')
 
+    def logout(client):
+        # Appeler la route '/logout'
+        response = client.get('/logout', follow_redirects=True)
+
+        # Vérifier que la redirection se fait vers la route 'index'
+        assert response.status_code == 200
+        assert request.path == '/logout'
+
+        # Vérifier que la fonction 'index' est appelée
+        assert b'Welcome to the GUDLFT Registration Portal!' in response.data
+
 def user_path_invalide_date_past(client):
 
     def show_summary_with_existing_email(client):
@@ -159,5 +252,16 @@ def user_path_invalide_date_past(client):
             assert response.status_code == 200
             assert "Ce concours a déjà eu lieu. / This competition has already taken place." in response.data.decode(
                 'utf-8')
+
+    def logout(client):
+        # Appeler la route '/logout'
+        response = client.get('/logout', follow_redirects=True)
+
+        # Vérifier que la redirection se fait vers la route 'index'
+        assert response.status_code == 200
+        assert request.path == '/logout'
+
+        # Vérifier que la fonction 'index' est appelée
+        assert b'Welcome to the GUDLFT Registration Portal!' in response.data
 
 
