@@ -3,8 +3,70 @@ from flask import Flask, request, render_template, flash
 import json
 from .conftest import app, client , mock_competitions, mock_clubs , load_clubs, load_competitions
 from P11_Testing_GUDLFT.server import clubs, competitions, updateClubs, updateCompetitions , book
-from unittest.mock import patch
+from unittest.mock import patch , mock_open
 # from server import book
+
+def test_loadClubs():
+    # Données de test
+    clubs_data = {
+        'clubs': [
+            {'name': 'Club A', 'points': 100},
+            {'name': 'Club B', 'points': 150},
+            {'name': 'Club C', 'points': 200}
+        ]
+    }
+
+    # Mock du fichier JSON pour le test
+    mock_file = mock_open(read_data=json.dumps(clubs_data))
+
+    with patch('builtins.open', mock_file):
+        # Appeler la fonction loadClubs
+        from P11_Testing_GUDLFT.server import loadClubs
+        result = loadClubs()
+
+        # Vérifier que le fichier JSON a été ouvert avec le bon nom de fichier
+        mock_file.assert_called_once_with('clubs.json')
+
+        # Vérifier que la fonction a renvoyé les données de clubs correctement
+        assert result == clubs_data['clubs']
+
+def test_loadCompetitions():
+    # Données de test
+    competitions_data = {
+        'competitions': [
+            {'name': 'Competition A', 'numberOfPlaces': 50},
+            {'name': 'Competition B', 'numberOfPlaces': 100},
+            {'name': 'Competition C', 'numberOfPlaces': 200}
+        ]
+    }
+
+    # Mock du fichier JSON pour le test
+    mock_file = mock_open(read_data=json.dumps(competitions_data))
+
+    with patch('builtins.open', mock_file):
+        # Appeler la fonction loadCompetitions
+        from P11_Testing_GUDLFT.server import loadCompetitions
+        result = loadCompetitions()
+
+        # Vérifier que le fichier JSON a été ouvert avec le bon nom de fichier
+        mock_file.assert_called_once_with('competitions.json')
+
+        # Vérifier que la fonction a renvoyé les données de compétitions correctement
+        assert result == competitions_data['competitions']
+
+
+def test_index():
+    # Créer un client de test Flask
+    with app.test_client() as client:
+        # Appeler la route '/'
+        response = client.get('/')
+
+        # Vérifier que la réponse a un code de statut 200 (OK)
+        assert response.status_code == 200
+
+        # Vérifier que le contenu HTML rendu contient le texte 'index.html'
+        assert b'Welcome to the GUDLFT Registration Portal!' in response.data
+
 
 
 def test_show_summary_with_existing_email(monkeypatch):
@@ -163,4 +225,19 @@ def test_purchase_places_integration(mock_update_clubs, mock_update_competitions
         assert updated_competition is not None
         # assert int(updated_competition['numberOfPlaces']) == initial_competition_places - places_required
 
+
+from flask import Flask, redirect, url_for, render_template
+from P11_Testing_GUDLFT.server import app  # Assurez-vous que le chemin vers le module server est correctement spécifié
+
+def test_logout(client):
+
+        # Appeler la route '/logout'
+        response = client.get('/logout', follow_redirects=True)
+
+        # Vérifier que la redirection se fait vers la route 'index'
+        assert response.status_code == 200
+        assert request.path == '/logout'
+
+        # Vérifier que la fonction 'index' est appelée
+        assert b'Welcome to the GUDLFT Registration Portal!' in response.data
 
