@@ -1,0 +1,30 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Summary | GUDLFT Registration</title>
+    </head>
+    <body>
+        <h2>Welcome, {{ club['email'] }} </h2>
+        <a href="{{ url_for('logout') }}">Logout</a>
+
+        <h1>Points Display Board</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Club Name</th>
+                    <th>Points</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for club_point in club_points %}
+                <tr>
+                    <td>{{ club_point.name }}</td>
+                    <td>{{ club_point.points }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>
