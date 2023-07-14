@@ -88,6 +88,9 @@ def purchasePlaces():
                     # print(f"\nplaces_required: {placesRequired}\n")
                     # print(f"\ncompetition['numberOfPlaces']: {competition['numberOfPlaces']}\n")
                     competition['numberOfPlaces'] = str(int(competition['numberOfPlaces']) - placesRequired)
+                    # club['points'] = str(int(club['points']) - placesRequired)
+                    # updateClubs()
+                    # updateCompetitions()
                     flash('Place réservé avec succcés / Great-booking complete!')
                 else:
                     flash(
